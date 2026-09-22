@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rock Paper Scissors – Hand Gesture Edition</title>
+  <meta name="description" content="Play Rock Paper Scissors using real-time hand gestures via MediaPipe." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- MediaPipe -->
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+  <div class="outer-frame">
+
+    <!-- TITLE -->
+    <header class="game-title">
+      <h1>ROCK PAPER SCISSORS</h1>
+      
+    </header>
+
+    <!-- ARENA -->
+    <div class="arena">
+
+      <!-- LEFT: AI PANEL -->
+      <div class="panel" id="aiPanel">
+        <div class="panel-header">
+          <span class="panel-label">AI</span>
+          <span class="panel-score score-ai" id="computerScore">0</span>
+        </div>
+        <div class="panel-content" id="aiContent">
+          <div class="choice-placeholder" id="aiChoiceDisplay">
+            <span>?</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CENTER -->
+      <div class="center-col">
+        <div class="divider"></div>
+        <div class="center-mid">
+          <div class="result-box" id="resultBox">
+            <span id="msg">Make<br>your<br>move!</span>
+          </div>
+          <!-- Countdown in the middle -->
+          <div class="countdown-overlay" id="countdownOverlay" hidden>
+            <div class="countdown-circle">
+              <svg viewBox="0 0 100 100">
+                <circle cx="50" cy="50" r="42" class="ring-track"/>
+                <circle cx="50" cy="50" r="42" class="ring-fill" id="ringFill"/>
+              </svg>
+              <span class="countdown-num" id="countdownNum">3</span>
+            </div>
+          </div>
+        </div>
+        <div class="divider"></div>
+      </div>
+
+      <!-- RIGHT: PLAYER PANEL — camera only -->
+      <div class="panel" id="playerPanel">
+        <div class="panel-header">
+          <span class="panel-label">PLAYER</span>
+          <span class="panel-score score-pl" id="userScore">0</span>
+        </div>
+        <!-- Camera fills this area entirely -->
+        <div class="cam-area" id="playerContent">
+          <!-- Camera OFF state -->
+          <div class="cam-off" id="camOff">
+            <span class="cam-off-icon">📷</span>
+            <p>Click below to<br>enable camera</p>
+          </div>
+          <!-- Camera ON state -->
+          <div class="cam-wrapper" id="camWrapper" hidden>
+            <video id="webcamVideo" autoplay playsinline muted></video>
+            <canvas id="handCanvas"></canvas>
+            <div class="hand-label" id="handLabel"></div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /arena -->
+
+    <!-- BOTTOM BAR -->
+    <div class="bottom-bar">
+      <button class="cam-toggle-btn" id="camToggleBtn">📷 Start Camera</button>
+      <span class="cam-status" id="camStatus"></span>
+    </div>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,344 @@
+/* ═══════════════════════════════════════════════════════
+   ROCK PAPER SCISSORS – Clean Dark UI
+   Black background · No gradients · No funky shadows
+   ═══════════════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap');
+
+/* ── RESET ── */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html, body { height:100%; font-family:'Poppins', sans-serif; }
+
+/* ── BODY ── */
+body {
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+/* ── OUTER FRAME ── */
+.outer-frame {
+  width: 100%;
+  max-width: 960px;
+  background: #000;
+  border: none;
+  border-radius: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── TITLE ── */
+.game-title {
+  padding: 28px 32px 22px;
+  text-align: center;
+  border-bottom: 1px solid #ffffff;
+}
+h1 {
+  font-family: 'Poppins', sans-serif;
+  font-size: clamp(1.1rem, 3.5vw, 2rem);
+  font-weight: 900;
+  letter-spacing: 4px;
+  color: #fff;
+}
+.subtitle {
+  margin-top: 6px;
+  font-size: .72rem;
+  font-weight: 600;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: #000000;
+}
+
+/* ── ARENA ── */
+.arena {
+  display: flex;
+  align-items: stretch;
+  padding: 24px;
+  gap: 0;
+  flex: 1;
+  min-height: 440px;
+}
+
+/* ── PANEL (shared) ── */
+.panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #ffffff;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #000000;
+}
+
+/* ── PANEL HEADER ── */
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 18px;
+  background: #111;
+  border-bottom: 1px solid #ffffff;
+  flex-shrink: 0;
+}
+.panel-label {
+  font-family: 'Poppins', sans-serif;
+  font-size: .95rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: #fff;
+}
+.panel-score {
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.4rem;
+  font-weight: 900;
+  color: #fff;
+  min-width: 52px;
+  text-align: center;
+  padding: 2px 14px;
+  border-radius: 6px;
+  transition: transform .2s;
+}
+.panel-score.bump { transform: scale(1.5); }
+.score-ai { background: #c0392b; }
+.score-pl { background: #1a7a2e; }
+
+/* ── AI PANEL CONTENT ── */
+.panel-content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.choice-placeholder {
+  width: 150px; height: 150px;
+  border-radius: 50%;
+  background: #000000;
+  border: 1px solid #fefefe;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3.5rem;
+  color: #ffffff;
+  font-weight: 900;
+  font-family: 'Poppins', sans-serif;
+}
+.ai-choice-img {
+  width: 150px; height: 150px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid #333;
+  animation: popIn .3s ease;
+}
+@keyframes popIn {
+  from { transform: scale(.5); opacity: 0; }
+  to   { transform: scale(1);  opacity: 1; }
+}
+
+/* ── PLAYER PANEL — camera fills entire content area ── */
+.cam-area {
+  flex: 1;
+  position: relative;
+  background: #000;
+  overflow: hidden;
+}
+
+/* Camera OFF placeholder */
+.cam-off {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: #ffffff;
+}
+.cam-off[hidden] { display: none; }
+.cam-off-icon { font-size: 3rem; opacity: .5; }
+.cam-off p {
+  text-align: center;
+  font-size: .85rem;
+  font-weight: 600;
+  line-height: 1.6;
+  letter-spacing: .5px;
+}
+
+/* Camera ON wrapper */
+.cam-wrapper {
+  position: absolute;
+  inset: 0;
+  background: #000;
+}
+.cam-wrapper[hidden] { display: none; }
+
+#webcamVideo {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transform: scaleX(-1);
+}
+#handCanvas {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  transform: scaleX(-1);
+}
+.hand-label {
+  position: absolute;
+  top: 10px; left: 10px;
+  font-family: 'Poppins', sans-serif;
+  font-size: .8rem;
+  font-weight: 700;
+  color: #fff;
+  background: rgba(0,0,0,.55);
+  padding: 4px 10px;
+  border-radius: 4px;
+  letter-spacing: 1px;
+  pointer-events: none;
+}
+
+/* ── CENTER COLUMN ── */
+.center-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 20px;
+  flex-shrink: 0;
+  width: 160px;
+}
+.divider {
+  flex: 1;
+  width: 1px;
+  
+}
+.center-mid {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 120px;
+  min-height: 120px;
+}
+
+/* ── RESULT BOX ── */
+.result-box {
+  background: #000000;
+  border: 1px solid #ffffff;
+  border-radius: 10px;
+  padding: 20px 10px;
+  text-align: center;
+  width: 100%;
+  transition: background .3s, border-color .3s;
+}
+.result-box.win  { background: #0a1f0d; border-color: #1a7a2e; }
+.result-box.lose { background: #1f0a0a; border-color: #c0392b; }
+.result-box.draw { background: #1a160a; border-color: #8a6a10; }
+
+#msg {
+  font-family: 'Poppins', sans-serif;
+  font-size: .8rem;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.6;
+  letter-spacing: 1px;
+}
+
+/* ── COUNTDOWN (center overlay) ── */
+.countdown-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+.countdown-overlay[hidden] { display: none; }
+.countdown-circle {
+  position: relative;
+  width: 110px; height: 110px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.countdown-circle svg {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  transform: rotate(-90deg);
+}
+.ring-track { fill: none; stroke: #222; stroke-width: 8; }
+.ring-fill  {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 8;
+  stroke-linecap: round;
+  stroke-dasharray: 264;
+  stroke-dashoffset: 264;
+  transition: stroke-dashoffset .05s linear;
+}
+.countdown-num {
+  font-family: 'Poppins', sans-serif;
+  font-size: 2.8rem;
+  font-weight: 900;
+  color: #fff;
+  position: relative; z-index: 1;
+}
+
+/* ── BOTTOM BAR ── */
+.bottom-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 16px 24px 22px;
+  border-top: 1px solid #ffffff;
+  flex-wrap: wrap;
+}
+.cam-toggle-btn {
+  padding: 11px 28px;
+  background: #fff;
+  border: none;
+  border-radius: 8px;
+  font-family: 'Inter', sans-serif;
+  font-size: .9rem;
+  font-weight: 700;
+  color: #000;
+  letter-spacing: .5px;
+  cursor: pointer;
+  transition: background .2s, transform .15s;
+}
+.cam-toggle-btn:hover  { background: #ddd; transform: translateY(-1px); }
+.cam-toggle-btn:active { transform: scale(.97); }
+.cam-toggle-btn.active {
+  background: #c0392b;
+  color: #fff;
+}
+.cam-status {
+  font-size: .8rem;
+  font-weight: 600;
+  color: #555;
+  letter-spacing: .5px;
+}
+
+/* ── WIN/LOSE FLASH ── */
+@keyframes panelFlash {
+  0%,100% { border-color: #2a2a2a; }
+  50%     { border-color: #fff; }
+}
+.panel.flash { animation: panelFlash .5s ease; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 620px) {
+  .arena { flex-direction: column; min-height: unset; }
+  .center-col {
+    flex-direction: row;
+    width: 100%; height: 80px;
+    padding: 10px 0;
+  }
+  .divider { flex:1; width:auto; height:1px; background:#222; }
+  .cam-area { min-height: 260px; }
+}
